@@ -2,6 +2,7 @@ package br.com.iftm.business.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import br.com.iftm.business.BusinessException;
@@ -10,6 +11,7 @@ import br.com.iftm.dao.TipoServicoDAO;
 import br.com.iftm.dao.impl.TipoServicoDAOImpl;
 import br.com.iftm.entity.TipoServico;
 
+@Service
 public class TipoServicoBusinessImpl implements TipoServicoBusiness {
 
 	private TipoServicoDAO dao = new TipoServicoDAOImpl();
