@@ -17,27 +17,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.iftm.business.BusinessException;
-import br.com.iftm.business.TipoServicoBusiness;
-import br.com.iftm.entity.TipoServico;;
+import br.com.iftm.business.PrestadorServicoBusiness;
+import br.com.iftm.entity.PrestadorServico;
 
 @RestController // habilita classe como um servico rest
-@RequestMapping(value = "/tiposervico") // nome do servico
-public class TipoServicoRest {
+@RequestMapping(value = "/prestadorServico") // nome do servico
+public class PrestadorServicoRest {
 
-	private List<TipoServico> lista = new ArrayList<>();
+	private List<PrestadorServico> lista = new ArrayList<>();
 	private int indice = 0;
 
 	@Autowired
-	private TipoServicoBusiness business;
+	private PrestadorServicoBusiness business;
 
 	// create
 	@PostMapping(name = "create")
-	public ResponseEntity<?> create(@RequestBody TipoServico tipoServico) {
+	public ResponseEntity<?> create(@RequestBody PrestadorServico prestadorServico) {
 
 		try {
-			tipoServico = business.create(tipoServico);
+			prestadorServico = business.create(prestadorServico);
 
-			return ResponseEntity.ok(tipoServico);
+			return ResponseEntity.ok(prestadorServico);
 
 		} catch (BusinessException e) {
 
@@ -53,7 +53,6 @@ public class TipoServicoRest {
 
 	/*
 	 * .............................................................................
-	 * .............
 	 */
 
 	// read
@@ -79,19 +78,41 @@ public class TipoServicoRest {
 
 	/*
 	 * .............................................................................
-	 * .............
 	 */
 
 	// leitura /filtro/nome?nome=xxx pelo nome
 
-	@GetMapping("/filtro/nome")
-	public ResponseEntity<?> readByName(@PathParam("nome") String nome) {
+	/*
+	 * @GetMapping("/filtro/nome") public ResponseEntity<?>
+	 * readByName(@PathParam("nome") String nome) {
+	 * 
+	 * try {
+	 * 
+	 * List<PrestadorServico> readByName = business.readByName(nome);
+	 * 
+	 * if (readByName.isEmpty()) {
+	 * 
+	 * return ResponseEntity.notFound().build(); }
+	 * 
+	 * return ResponseEntity.notFound().build();
+	 * 
+	 * } catch (BusinessException e) {
+	 * 
+	 * e.printStackTrace(); return ResponseEntity.badRequest().body(e); } catch
+	 * (Exception e) {
+	 * 
+	 * return ResponseEntity.badRequest().body(e);
+	 * 
+	 * } }
+	 */
 
+	@GetMapping("/filtro/nome")
+	public ResponseEntity<?> readByName(@PathParam("cidade") String cidade) {
 		try {
 
-			List<TipoServico> readByName = business.readByName(nome);
+			List<PrestadorServico> readByCidade = business.readByCidade(cidade);
 
-			if (readByName.isEmpty()) {
+			if (readByCidade.isEmpty()) {
 
 				return ResponseEntity.notFound().build();
 			}
@@ -111,18 +132,17 @@ public class TipoServicoRest {
 
 	/*
 	 * .............................................................................
-	 * .............
 	 */
 
 	// update
 
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody TipoServico tipoServico) {
+	public ResponseEntity<?> update(@RequestBody PrestadorServico prestadorServico) {
 
 		try {
-			tipoServico = business.update(tipoServico);
+			prestadorServico = business.update(prestadorServico);
 
-			return ResponseEntity.ok(tipoServico);
+			return ResponseEntity.ok(prestadorServico);
 
 		} catch (BusinessException e) {
 
@@ -139,7 +159,6 @@ public class TipoServicoRest {
 
 	/*
 	 * .............................................................................
-	 * .............
 	 */
 
 	// delete

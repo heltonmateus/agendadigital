@@ -17,27 +17,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.iftm.business.BusinessException;
-import br.com.iftm.business.TipoServicoBusiness;
-import br.com.iftm.entity.TipoServico;;
+import br.com.iftm.business.CidadeBusiness;
+import br.com.iftm.entity.Cidade;
+import br.com.iftm.entity.enums.Estado;
 
 @RestController // habilita classe como um servico rest
-@RequestMapping(value = "/tiposervico") // nome do servico
-public class TipoServicoRest {
+@RequestMapping(value = "/cidade") // nome do servico
+public class CidadeRest {
 
-	private List<TipoServico> lista = new ArrayList<>();
+	private List<Cidade> lista = new ArrayList<>();
 	private int indice = 0;
 
 	@Autowired
-	private TipoServicoBusiness business;
+	private CidadeBusiness business;
 
 	// create
 	@PostMapping(name = "create")
-	public ResponseEntity<?> create(@RequestBody TipoServico tipoServico) {
+	public ResponseEntity<?> create(@RequestBody Cidade cidade) {
 
 		try {
-			tipoServico = business.create(tipoServico);
+			cidade = business.create(cidade);
 
-			return ResponseEntity.ok(tipoServico);
+			return ResponseEntity.ok(cidade);
 
 		} catch (BusinessException e) {
 
@@ -85,18 +86,18 @@ public class TipoServicoRest {
 	// leitura /filtro/nome?nome=xxx pelo nome
 
 	@GetMapping("/filtro/nome")
-	public ResponseEntity<?> readByName(@PathParam("nome") String nome) {
+	public ResponseEntity<?> readByEstado(@PathParam("estado") Estado estado) {
 
 		try {
 
-			List<TipoServico> readByName = business.readByName(nome);
+			List<Cidade> readByEstado = business.readByEstado(estado);
 
-			if (readByName.isEmpty()) {
+			if (readByEstado == null || readByEstado.isEmpty()) {
 
 				return ResponseEntity.notFound().build();
 			}
 
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok(readByEstado);
 
 		} catch (BusinessException e) {
 
@@ -117,12 +118,12 @@ public class TipoServicoRest {
 	// update
 
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody TipoServico tipoServico) {
+	public ResponseEntity<?> update(@RequestBody Cidade cidade) {
 
 		try {
-			tipoServico = business.update(tipoServico);
+			cidade = business.update(cidade);
 
-			return ResponseEntity.ok(tipoServico);
+			return ResponseEntity.ok(cidade);
 
 		} catch (BusinessException e) {
 
