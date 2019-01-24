@@ -71,7 +71,11 @@ public class PrestadorServicoDAOImpl implements PrestadorServicoDAO {
 				prestadorServico2.setCidade(prestadorServico.getCidade());
 				prestadorServico2.setCep(prestadorServico.getCep());
 				prestadorServico2.setTipoLogradouro(prestadorServico.getTipoLogradouro());
-				// completarrrrrr
+				prestadorServico2.setLogradouro(prestadorServico.getLogradouro());
+				prestadorServico2.setComplemento(prestadorServico.getComplemento());
+				prestadorServico2.setNumero(prestadorServico.getNumero());
+				prestadorServico2.setEmail(prestadorServico.getEmail());
+				prestadorServico2.setNome(prestadorServico.getNome());
 
 				break;
 			}

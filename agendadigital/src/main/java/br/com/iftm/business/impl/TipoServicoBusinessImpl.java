@@ -2,25 +2,30 @@ package br.com.iftm.business.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.com.iftm.business.BusinessException;
 import br.com.iftm.business.TipoServicoBusiness;
 import br.com.iftm.dao.TipoServicoDAO;
-import br.com.iftm.dao.impl.TipoServicoDAOImpl;
 import br.com.iftm.entity.TipoServico;
 
 @Service
+@Transactional
 public class TipoServicoBusinessImpl implements TipoServicoBusiness {
 
-	private TipoServicoDAO dao = new TipoServicoDAOImpl();
+	// private TipoServicoDAO dao = new TipoServicoDAOImpl();
+	@Autowired
+	private TipoServicoDAO dao;
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED) // adicionado para bd
 	public TipoServico create(TipoServico tipoServico) throws BusinessException {
 
 		if (StringUtils.isEmpty(tipoServico.getNome())) {
-
 			throw new BusinessException("Nome requerido!");
 		}
 
@@ -33,6 +38,7 @@ public class TipoServicoBusinessImpl implements TipoServicoBusiness {
 	 */
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<TipoServico> read() throws BusinessException {
 
 		return dao.read();
@@ -44,6 +50,7 @@ public class TipoServicoBusinessImpl implements TipoServicoBusiness {
 	 */
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<TipoServico> readByName(String nome) throws BusinessException {
 
 		if (StringUtils.isEmpty(nome)) {
@@ -83,6 +90,7 @@ public class TipoServicoBusinessImpl implements TipoServicoBusiness {
 	 */
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Integer id) throws BusinessException {
 
 		if (id == null) {
