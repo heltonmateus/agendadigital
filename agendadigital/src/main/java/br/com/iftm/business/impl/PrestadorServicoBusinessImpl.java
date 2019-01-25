@@ -2,39 +2,33 @@ package br.com.iftm.business.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.com.iftm.business.BusinessException;
 import br.com.iftm.business.PrestadorServicoBusiness;
 import br.com.iftm.dao.PrestadorServicoDAO;
-import br.com.iftm.dao.impl.PrestadorServicoDAOImpl;
 import br.com.iftm.entity.PrestadorServico;
 import br.com.iftm.entity.Telefone;
 import br.com.iftm.entity.TipoServico;
 
 @Service
+@Transactional
 public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 
-	private PrestadorServicoDAO dao = new PrestadorServicoDAOImpl();
+	@Autowired
+	private PrestadorServicoDAO dao;
 
 	// validações
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public PrestadorServico create(PrestadorServico prestadorServico) throws BusinessException {
 
 		if (StringUtils.isEmpty(prestadorServico.getNome())) {
-
 			throw new BusinessException("Nome requerido!");
-		}
-
-		if (prestadorServico.getTipoLogradouro() == null) {
-
-			throw new BusinessException(" Logradouro requerido!");
-		}
-
-		if (StringUtils.isEmpty(prestadorServico.getCep())) {
-
-			throw new BusinessException(" Cep requerido!");
 		}
 
 		if (prestadorServico.getCidade() == null || prestadorServico.getCidade().getCodigo() == null) {
@@ -47,9 +41,19 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 			throw new BusinessException(" Tipo Lougradoro requerida!");
 		}
 
-		if (StringUtils.isEmpty(prestadorServico.getLogradouro())) {
+		if (prestadorServico.getLogradouro() == null) {
 
 			throw new BusinessException(" Logradouro requerido!");
+
+		}
+
+		if (prestadorServico.getNumero() == null) {
+
+			throw new BusinessException(" Numero requerido!");
+		}
+
+		if (prestadorServico.getBairro() == null || StringUtils.isEmpty(prestadorServico.getBairro())) {
+			throw new BusinessException(" bairro requerido!");
 		}
 
 		if (prestadorServico.getTelefones() == null || prestadorServico.getTelefones().isEmpty()) {
@@ -68,6 +72,8 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 
 				throw new BusinessException(" Telefone invalido!");
 			}
+
+			telefone.setPrestadorServico(prestadorServico);
 
 		}
 
@@ -94,6 +100,7 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 	 */
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<PrestadorServico> read() throws BusinessException {
 
 		return dao.read();
@@ -118,6 +125,7 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 	 */
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<PrestadorServico> readByCidade(String cidade) throws BusinessException {
 
 		if (StringUtils.isEmpty(cidade)) {
@@ -135,6 +143,7 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 	 */
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public PrestadorServico update(PrestadorServico prestadorServico) throws BusinessException {
 
 		if (prestadorServico.getCodigo() == null) {
@@ -143,18 +152,7 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 		}
 
 		if (StringUtils.isEmpty(prestadorServico.getNome())) {
-
 			throw new BusinessException("Nome requerido!");
-		}
-
-		if (prestadorServico.getTipoLogradouro() == null) {
-
-			throw new BusinessException(" Logradouro requerido!");
-		}
-
-		if (StringUtils.isEmpty(prestadorServico.getCep())) {
-
-			throw new BusinessException(" Cep requerido!");
 		}
 
 		if (prestadorServico.getCidade() == null || prestadorServico.getCidade().getCodigo() == null) {
@@ -167,9 +165,19 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 			throw new BusinessException(" Tipo Lougradoro requerida!");
 		}
 
-		if (StringUtils.isEmpty(prestadorServico.getLogradouro())) {
+		if (prestadorServico.getLogradouro() == null) {
 
 			throw new BusinessException(" Logradouro requerido!");
+
+		}
+
+		if (prestadorServico.getNumero() == null) {
+
+			throw new BusinessException(" Numero requerido!");
+		}
+
+		if (prestadorServico.getBairro() == null || StringUtils.isEmpty(prestadorServico.getBairro())) {
+			throw new BusinessException(" bairro requerido!");
 		}
 
 		if (prestadorServico.getTelefones() == null || prestadorServico.getTelefones().isEmpty()) {
@@ -188,6 +196,8 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 
 				throw new BusinessException(" Telefone invalido!");
 			}
+
+			telefone.setPrestadorServico(prestadorServico);
 
 		}
 
@@ -215,6 +225,7 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 	 */
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Integer id) throws BusinessException {
 
 		if (id == null) {

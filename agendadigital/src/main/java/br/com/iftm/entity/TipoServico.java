@@ -13,12 +13,11 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "TB_TIPOSERVICO", schema = "GAC", uniqueConstraints = {
 		@UniqueConstraint(name = "UNQ_TIPO_SERVICO", columnNames = { "NOME_TIPOSERVICO" }) })
 
-@SequenceGenerator(name = "SQ_TIPOSERVICO", sequenceName = "SQ_TIPOSERVICO", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "SQ_TIPOSERVICO", sequenceName = "SQ_TIPOSERVICO", initialValue = 1, allocationSize = 1, schema = "GAC")
 public class TipoServico {
 
 	@Id
 	@GeneratedValue(generator = "SQ_TIPOSERVICO", strategy = GenerationType.SEQUENCE)
-
 	@Column(name = "CODIGO_TIPOSERVICO", nullable = false)
 	private Integer codigo;
 

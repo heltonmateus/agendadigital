@@ -3,6 +3,10 @@ package br.com.iftm.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.com.iftm.dao.CidadeDAO;
@@ -12,14 +16,20 @@ import br.com.iftm.entity.enums.Estado;
 @Repository
 public class CidadeDAOImpl implements CidadeDAO {
 
+	@Autowired
+	private SessionFactory sessionFactory;
+
 	private List<Cidade> lista = new ArrayList<>();
-	private int indice = 0;
+	// private int indice = 0;
 
 	@Override
 	public Cidade create(Cidade cidade) {
 
-		cidade.setCodigo(indice++);
-		lista.add(cidade);
+		sessionFactory.getCurrentSession().save(cidade);
+		sessionFactory.getCurrentSession().flush();
+
+		// cidade.setCodigo(indice++);
+		// lista.add(cidade);
 		return cidade;
 
 	}
@@ -27,50 +37,63 @@ public class CidadeDAOImpl implements CidadeDAO {
 	@Override
 	public List<Cidade> read() {
 
-		return lista;
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Cidade.class);
+
+		return criteria.list();
 	}
 
 	@Override
 	public List<Cidade> readByEstado(Estado estado) {
 
-		List<Cidade> listaRetorno = new ArrayList<>();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Cidade.class);
 
-		for (Cidade cidade : lista) {
+		criteria.add(Restrictions.eq("estado", estado));
 
-			if (cidade.getEstado().equals(estado)) {
-				listaRetorno.add(cidade);
+		return criteria.list();
 
-			}
-		}
-
-		return listaRetorno;
+		/*
+		 * List<Cidade> listaRetorno = new ArrayList<>();
+		 * 
+		 * for (Cidade cidade : lista) {
+		 * 
+		 * if (cidade.getEstado().equals(estado)) { listaRetorno.add(cidade);
+		 * 
+		 * return listaRetorno;
+		 * 
+		 * }
+		 */
 	}
 
 	@Override
 	public Cidade update(Cidade cidade) {
 
-		for (Cidade cidade2 : lista) {
+		sessionFactory.getCurrentSession().update(cidade);
+		sessionFactory.getCurrentSession().flush();
 
-			if (cidade2.getCodigo().equals(cidade.getCodigo())) {
-				cidade2.setNome(cidade.getNome());
-				cidade2.setEstado(cidade.getEstado());
-			}
-
-		}
+		/*
+		 * for (Cidade cidade2 : lista) {
+		 * 
+		 * if (cidade2.getCodigo().equals(cidade.getCodigo())) {
+		 * cidade2.setNome(cidade.getNome()); cidade2.setEstado(cidade.getEstado()); }
+		 * 
+		 * }
+		 */
 		return cidade;
 	}
 
 	@Override
 	public void delete(Integer id) {
 
-		for (Cidade cidade2 : lista) {
+		Cidade cidade = new Cidade();
+		cidade.setCodigo(id);
 
-			if (cidade2.getCodigo().equals(id)) {
-				lista.remove(cidade2);
-				break;
-			}
+		sessionFactory.getCurrentSession().delete(cidade);
 
-		}
+		/*
+		 * for (Cidade cidade2 : lista) {
+		 * 
+		 * if (cidade2.getCodigo().equals(id)) { lista.remove(cidade2); break; }
+		 */
 
 	}
 

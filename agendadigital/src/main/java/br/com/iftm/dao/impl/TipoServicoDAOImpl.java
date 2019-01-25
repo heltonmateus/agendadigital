@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -47,7 +48,7 @@ public class TipoServicoDAOImpl implements TipoServicoDAO {
 
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TipoServico.class);
 
-		criteria.add(Restrictions.like("nome", nome).ignoreCase());
+		criteria.add(Restrictions.like("nome", nome, MatchMode.ANYWHERE).ignoreCase());
 
 		return criteria.list();
 
@@ -84,21 +85,18 @@ public class TipoServicoDAOImpl implements TipoServicoDAO {
 
 	@Override
 	public void delete(Integer id) {
-		
+
 		TipoServico tipoServico = new TipoServico();
 		tipoServico.setCodigo(id);
-		
+
 		sessionFactory.getCurrentSession().delete(tipoServico);
 
-		/*for (TipoServico tipoServico2 : lista) {
-			if (tipoServico2.getCodigo().equals(id)) {
-				lista.remove(tipoServico2);
-				break;
-			}
-			
-			*/
-
-		}
+		/*
+		 * for (TipoServico tipoServico2 : lista) { if
+		 * (tipoServico2.getCodigo().equals(id)) { lista.remove(tipoServico2); break; }
+		 * 
+		 */
 
 	}
+
 }

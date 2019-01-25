@@ -68,6 +68,7 @@ public class TipoServicoBusinessImpl implements TipoServicoBusiness {
 	 */
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public TipoServico update(TipoServico tipoServico) throws BusinessException {
 
 		if (tipoServico.getCodigo() == null) {

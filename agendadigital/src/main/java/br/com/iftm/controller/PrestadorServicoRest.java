@@ -142,8 +142,6 @@ public class PrestadorServicoRest {
 		try {
 			prestadorServico = business.update(prestadorServico);
 
-			return ResponseEntity.ok(prestadorServico);
-
 		} catch (BusinessException e) {
 
 			e.printStackTrace();
@@ -154,6 +152,7 @@ public class PrestadorServicoRest {
 			return ResponseEntity.badRequest().body(e);
 
 		}
+		return ResponseEntity.ok(prestadorServico);
 
 	}
 
