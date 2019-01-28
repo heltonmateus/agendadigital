@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import br.com.iftm.business.BusinessException;
 import br.com.iftm.business.PrestadorServicoBusiness;
+import br.com.iftm.controller.dto.FiltroPrestadorDTO;
 import br.com.iftm.dao.PrestadorServicoDAO;
 import br.com.iftm.entity.PrestadorServico;
 import br.com.iftm.entity.Telefone;
@@ -235,6 +236,13 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 
 		dao.delete(id);
 
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<PrestadorServico> readyByFiltros(FiltroPrestadorDTO FiltroPrestadorDTO) throws BusinessException {
+
+		return dao.readyByFiltros(FiltroPrestadorDTO);
 	}
 
 }

@@ -2,6 +2,7 @@ package br.com.iftm.business;
 
 import java.util.List;
 
+import br.com.iftm.controller.dto.FiltroPrestadorDTO;
 import br.com.iftm.entity.PrestadorServico;
 
 public interface PrestadorServicoBusiness {
@@ -16,5 +17,7 @@ public interface PrestadorServicoBusiness {
 	PrestadorServico update(PrestadorServico prestadorServico) throws BusinessException;
 
 	void delete(Integer id) throws BusinessException;
+
+	List<PrestadorServico> readyByFiltros(FiltroPrestadorDTO FiltroPrestadorDTO) throws BusinessException;
 
 }
